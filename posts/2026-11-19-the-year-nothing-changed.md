@@ -1,10 +1,10 @@
 ---
-title: "4학년, 아무리 해도 늘지 않던 1년"
+title: "유소년 축구 정체기: 4학년, 아무리 해도 늘지 않던 1년"
 date: 2026-11-19T09:00:00+09:00
 category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
-tags: [4학년, 정체기, 자신감, 벤치]
-summary: "일주일에 한 번 새벽 레슨을 꾸준히 다녔지만 실력은 제자리였습니다. 배운 걸 매번 잊고, 경기는 거의 못 뛰고, 감독님께 혼나던 시간."
+tags: [유소년축구, 정체기, 초등축구, 자신감, 벤치]
+summary: "일주일에 한 번 새벽 레슨을 꾸준히 다녔지만 실력은 제자리였습니다. 배운 걸 매번 잊고, 경기는 거의 못 뛰던 초등 4학년 유소년 축구 정체기의 기록."
 cover: images/2026-11-19-the-year-nothing-changed.webp
 coverAlt: "흐린 날 벤치에 혼자 앉아 경기를 지켜보는 소년 일러스트"
 coverPrompt: "Anime illustration, overcast muted palette: a 10-year-old Korean boy sitting alone on a team bench in a green bib, chin on his hands, watching teammates play a match, a ball at his feet. Quiet, reflective mood but with a small warm light on him. Not photorealistic, no text."
@@ -36,3 +36,8 @@ mood: "답답"
 이상하게도 아이는 그만두겠다는 말을 하지 않았습니다. 못하고, 혼나고, 경기에 못 나가도 **축구는 계속하고 싶어 했습니다.**
 
 돌이켜 보면 4학년의 1년은 실패한 시간이 아니었습니다. 실력은 제자리 같았어도 **포기하지 않는 습관**이 그때 만들어졌습니다. 그리고 5학년이 될 무렵, 전혀 예상하지 못한 기회가 찾아옵니다.
+
+## 함께 읽으면 좋은 글
+
+- [초등 축구 선수반, 팀에서 제일 못하던 아이를 그만두지 않게 한 이유](../2026-11-18-worst-in-the-team/)
+- [초등 5학년, 매일 새벽 축구 훈련이 시작되다](../2026-11-19-every-dawn/)

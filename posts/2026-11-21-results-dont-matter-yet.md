@@ -1,10 +1,10 @@
 ---
-title: "중3까지는 시합 결과가 중요하지 않다고 믿는 이유"
+title: "유소년 축구, 중3까지는 시합 결과가 중요하지 않다고 믿는 이유"
 date: 2026-11-21T19:00:00+09:00
 category: 육성 철학
 series: 아빠의 육성 철학
-tags: [유소년육성, 8대8, 11대11, 성장기, 부상]
-summary: "중학교나 고등학교 잘 가려고 축구하는 게 아니라, 성인이 되어 프로가 되려고 하는 것. 초등·중등·고등 시기마다 무엇에 집중해야 하는지 아빠의 생각을 정리했습니다."
+tags: [유소년육성, 유소년축구, 8대8, 11대11, 성장기]
+summary: "중학교나 고등학교 잘 가려고 축구하는 게 아니라, 성인이 되어 프로가 되려고 하는 것. 유소년 축구에서 초등·중등·고등 시기마다 무엇에 집중할지 정리했습니다."
 cover: images/2026-11-21-results-dont-matter-yet.webp
 coverAlt: "멀리 경기장을 향해 구불구불한 길을 걸어가는 8번 소년 일러스트"
 coverPrompt: "Anime illustration, a long winding road on a green soccer field drawn like a journey map: small signposts for elementary, middle school and high school, a young Korean boy in a green number 8 kit walking forward toward a distant stadium on the horizon at sunrise. Inspirational, storybook style. Not photorealistic, no readable text."
@@ -48,3 +48,8 @@ mood: "확신"
 **발밑 → 고개 → 시야 → 판단 → 템포.**
 
 다음 글에서 이 사슬을 하나씩 풀어 보겠습니다.
+
+## 함께 읽으면 좋은 글
+
+- [유소년 축구 빌드업: 좌우보다 앞뒤로, 2보 전진을 위한 1보 후퇴](../2026-11-22-back-and-forth/)
+- [축구 멘탈: 늘 앞에 더 잘하는 아이가 있었기에 주눅 들지 않는다](../2026-11-20-always-someone-better/)

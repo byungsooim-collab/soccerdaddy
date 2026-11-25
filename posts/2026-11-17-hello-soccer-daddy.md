@@ -1,9 +1,9 @@
 ---
-title: "사커대디, 시작합니다: 13살 미드필더 키우기 프로젝트"
+title: "사커대디 시작: 13살 미드필더 아들의 유소년 축구 성장 기록"
 date: 2026-11-17T09:00:00+09:00
 category: 공지
-tags: [시작, 다마고치, 성장기록]
-summary: "축구하는 13살 아들을 다마고치처럼, 하지만 진심으로 키워 보는 아빠의 기록. 이 블로그에서 무엇을 어떻게 남길지 소개합니다."
+tags: [유소년축구, 축구아빠, 축구학부모, 성장기록, 다마고치]
+summary: "축구하는 13살 미드필더 아들을 다마고치처럼, 하지만 진심으로 키워 보는 아빠의 유소년 축구 기록. 이 블로그에서 무엇을 어떻게 남길지 소개합니다."
 cover: images/2026-11-17-hello-soccer-daddy.webp
 coverAlt: "해 뜨는 동네 운동장에서 공을 튀기는 아들과 노트를 든 아빠 일러스트"
 coverPrompt: "Anime illustration, warm soft colors: a Korean dad and his 13-year-old son in a green number 8 youth soccer kit standing side by side on a small neighborhood pitch at sunrise, the boy juggling a ball, dad holding a notebook. Cozy, hopeful blog header mood. Not photorealistic, no text."
@@ -60,3 +60,9 @@ mood: "설렘"
 아이의 **실명, 학교, 얼굴은 공개하지 않습니다.** 블로그에서는 아이를 '주니어'라고 부르고, 그림은 실제 아이와 닮지 않은 일러스트로 그려 넣습니다.
 
 축구하는 아이를 둔 부모님, 혹은 어릴 적 공 하나로 하루를 보냈던 분들. 같이 지켜봐 주세요. 우리 주니어, 잘 키워 보겠습니다. ⚽
+
+## 함께 읽으면 좋은 글
+
+- [유소년 축구 능력치, 집에서 재는 법: 13살 미드필더 선수 카드](../2026-11-17-player-card/)
+- [초등학생 축구 시작: 공부는 싫고 운동은 좋았던 아이, 축구를 만나다](../2026-11-18-why-soccer/)
+- [유소년 축구, 중3까지는 시합 결과가 중요하지 않다고 믿는 이유](../2026-11-21-results-dont-matter-yet/)

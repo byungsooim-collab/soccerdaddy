@@ -1,10 +1,10 @@
 ---
-title: "선수반에서 제일 못하는 아이: 그만두지 않게 한 이유"
+title: "초등 축구 선수반, 팀에서 제일 못하던 아이를 그만두지 않게 한 이유"
 date: 2026-11-18T19:00:00+09:00
 category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
-tags: [선수반, 새벽훈련, 비교, 포기]
-summary: "먼저 시작한 친구들은 너무 잘했고, 아들은 하기 싫다고 했습니다. 그때 그만두게 하지 않은 이유와 새벽 훈련을 처음 만난 이야기."
+tags: [초등축구, 선수반, 새벽훈련, 축구학부모, 포기]
+summary: "먼저 시작한 친구들은 너무 잘했고, 아들은 하기 싫다고 했습니다. 초등 축구 선수반에서 그만두게 하지 않은 이유와 새벽 훈련을 처음 만난 이야기."
 cover: images/2026-11-18-worst-in-the-team.webp
 coverAlt: "공을 꼭 안고 형들의 훈련을 지켜보는 작은 소년과 어깨에 손을 얹은 아빠 일러스트"
 coverPrompt: "Anime illustration, early morning blue light: a small Korean boy in an oversized green training top standing at the edge of a futsal-sized pitch, watching older skilled kids juggle, holding his ball tightly, his dad's hand on his shoulder. Gentle, slightly melancholic but hopeful. Not photorealistic, no text."
@@ -43,3 +43,8 @@ mood: "속상"
 토요일마다 해 뜨기 전에 일어나 용인까지 가는 생활이 시작됐습니다. 아이도 저도 쉽지 않았지만, 지금 돌아보면 이 새벽 시간이 우리 아들 축구의 뿌리가 됐습니다.
 
 그런데 여기서 바로 "그래서 실력이 쑥쑥 늘었습니다"로 이어지면 좋겠지만, 현실은 그렇지 않았습니다. 다음 글은 **늘지 않던 1년**에 대한 이야기입니다.
+
+## 함께 읽으면 좋은 글
+
+- [초등학생 축구 시작: 공부는 싫고 운동은 좋았던 아이, 축구를 만나다](../2026-11-18-why-soccer/)
+- [유소년 축구 정체기: 4학년, 아무리 해도 늘지 않던 1년](../2026-11-19-the-year-nothing-changed/)

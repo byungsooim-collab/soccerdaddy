@@ -1,10 +1,10 @@
 ---
-title: "좌우보다 앞뒤로: 2보 전진을 위한 1보 후퇴"
+title: "유소년 축구 빌드업: 좌우보다 앞뒤로, 2보 전진을 위한 1보 후퇴"
 date: 2026-11-22T19:00:00+09:00
 category: 전술 노트
 series: 아빠의 육성 철학
-tags: [빌드업, 티키타카, 템포, 전술]
-summary: "공간을 만들려고 좌우로 공을 돌리면 템포가 죽습니다. 유럽 축구를 보며 느낀, 앞뒤로 주고받으며 앞으로 찔러 넣는 빌드업 이야기."
+tags: [빌드업, 축구전술, 템포, 미드필더, 유소년축구]
+summary: "공간을 만들려고 좌우로 공을 돌리면 템포가 죽습니다. 유럽 축구를 보며 느낀, 앞뒤로 주고받으며 앞으로 찔러 넣는 유소년 축구 빌드업 이야기."
 cover: images/2026-11-22-back-and-forth.webp
 coverAlt: "백패스 뒤 전진 패스를 화살표로 보여 주는 전술판 느낌의 일러스트"
 coverPrompt: "Anime illustration from a high tactical angle: youth players in green kits on a soccer pitch, glowing arrows showing a short back pass followed by a sharp forward through pass, a 13-year-old midfielder number 8 at the center of the pattern. Clean, energetic, storybook tactics board feel. Not photorealistic, no text."
@@ -45,3 +45,8 @@ mood: "진지"
 결국 지난 글의 사슬, **발밑 → 고개 → 시야 → 판단 → 템포**가 전술로 이어지는 겁니다. 중학교에서 11대11을 시작한 아들에게 지금 가장 바라는 것도 이것입니다. 좌우가 아니라 앞을 보는 미드필더가 되는 것.
 
 앞으로 '전술 노트'에서는 아들 경기를 보며 느낀 장면들을 하나씩 더 풀어 보겠습니다.
+
+## 함께 읽으면 좋은 글
+
+- [미드필더 발밑이 중요한 이유: 고개를 들고 템포까지 이어지는 사슬](../2026-11-22-footwork-to-tempo/)
+- [유소년 축구, 중3까지는 시합 결과가 중요하지 않다고 믿는 이유](../2026-11-21-results-dont-matter-yet/)

@@ -1,10 +1,10 @@
 ---
-title: "공부는 싫고 운동은 좋았던 아이, 축구를 만나다"
+title: "초등학생 축구 시작: 공부는 싫고 운동은 좋았던 아이, 축구를 만나다"
 date: 2026-11-18T09:00:00+09:00
 category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
-tags: [축구시작, 취미반, 태권도, 농구]
-summary: "태권도, 농구, 그리고 축구. 스포츠 센터를 전전하던 아이가 '축구가 제일 재밌다'고 말하기까지의 이야기입니다."
+tags: [초등축구, 축구시작, 축구취미반, 유소년축구]
+summary: "태권도, 농구, 그리고 축구. 스포츠 센터를 전전하던 초등학생 아이가 '축구가 제일 재밌다'며 취미반을 시작하기까지의 이야기입니다."
 cover: images/2026-11-18-why-soccer.webp
 coverAlt: "태권도, 농구, 축구를 해 보는 어린 소년, 축구 장면이 가장 환한 일러스트"
 coverPrompt: "Anime illustration, warm nostalgic colors: a small Korean elementary school boy (about 8) in a sports center, trying taekwondo, basketball and soccer in three small vignettes, the soccer vignette glowing brightest with a huge smile. Not photorealistic, no text."
@@ -46,3 +46,8 @@ mood: "두근"
 아이가 **스스로 좋아서 고른 것**이라는 점, 그리고 그다음 단계(선수반)도 **아이가 먼저 하고 싶다고 했다는 점**. 이 두 가지가 이후 힘든 시간을 버티게 해 준 바탕이 됐다고 믿습니다.
 
 물론 좋아하는 것과 잘하는 것은 다릅니다. 선수반에 들어간 아들은 곧 그 차이를 아주 뼈저리게 겪게 됩니다. 다음 글에서 이어 가겠습니다.
+
+## 함께 읽으면 좋은 글
+
+- [초등 축구 선수반, 팀에서 제일 못하던 아이를 그만두지 않게 한 이유](../2026-11-18-worst-in-the-team/)
+- [유소년 축구 정체기: 4학년, 아무리 해도 늘지 않던 1년](../2026-11-19-the-year-nothing-changed/)

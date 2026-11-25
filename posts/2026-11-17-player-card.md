@@ -1,10 +1,10 @@
 ---
-title: "선수 카드 공개: 13살 미드필더, 무엇을 재고 어떻게 키울까"
+title: "유소년 축구 능력치, 집에서 재는 법: 13살 미드필더 선수 카드"
 date: 2026-11-17T19:00:00+09:00
 category: 성장기록
 series: 상태창 프로젝트
-tags: [선수카드, 측정, 미드필더]
-summary: "상태창의 각 능력치를 집에서 어떻게 잴지 정리했습니다. 거창한 장비 없이, 꾸준히 같은 방법으로 재는 것이 핵심입니다."
+tags: [유소년축구, 선수카드, 체력측정, 미드필더, 성장기록]
+summary: "유소년 축구 선수의 체력·스피드·패스 같은 능력치를 집에서 어떻게 잴지 정리했습니다. 거창한 장비 없이, 꾸준히 같은 방법으로 재는 것이 핵심입니다."
 cover: images/2026-11-17-player-card.webp
 coverAlt: "8번 초록 유니폼 소년 옆에 떠 있는 게임 상태창 일러스트"
 coverPrompt: "Anime illustration in a cozy game-UI style: a 13-year-old Korean boy midfielder in a green number 8 kit standing confidently, next to a floating fantasy-RPG style status window with empty stat bars (stamina, speed, dribble, pass, shoot, vision, mental). Soft pastel colors, playful, not photorealistic, no readable text."
@@ -49,3 +49,8 @@ mood: "기대"
 측정 방법을 정했으니, 이제 첫 측정을 해 볼 차례입니다. 측정이 끝나면 상태창의 "측정 전"이 처음으로 숫자로 바뀔 거예요.
 
 아이에게 이 계획을 말했더니 첫 반응이 "슈팅은 몇 점부터 시작해?"였습니다. 역시 13살입니다. 😄
+
+## 함께 읽으면 좋은 글
+
+- [사커대디 시작: 13살 미드필더 아들의 유소년 축구 성장 기록](../2026-11-17-hello-soccer-daddy/)
+- [미드필더 발밑이 중요한 이유: 고개를 들고 템포까지 이어지는 사슬](../2026-11-22-footwork-to-tempo/)

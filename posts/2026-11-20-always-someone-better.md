@@ -1,10 +1,10 @@
 ---
-title: "늘 앞에 더 잘하는 아이가 있었다, 그래서 주눅 들지 않는다"
+title: "축구 멘탈: 늘 앞에 더 잘하는 아이가 있었기에 주눅 들지 않는다"
 date: 2026-11-20T09:00:00+09:00
 category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
-tags: [멘탈, 비교, 슬럼프, 중학교팀, 발밑]
-summary: "가장 못하는 자리에서 시작해 서서히 잘하게 된 아이. 덕분에 자기보다 잘하는 선수를 만나도 무너지지 않습니다. 그리고 지금, 중학교 팀에서 듣는 '발밑이 좋다'는 말."
+tags: [축구멘탈, 비교, 중학교축구, 발밑, 슬럼프]
+summary: "가장 못하는 자리에서 시작해 서서히 잘하게 된 아이. 덕분에 자기보다 잘하는 선수를 만나도 무너지지 않습니다. 그리고 지금 중학교 팀에서 듣는 '발밑이 좋다'는 말."
 cover: images/2026-11-20-always-someone-better.webp
 coverAlt: "11대11 경기에서 고개를 들고 공을 부드럽게 받는 8번 미드필더 일러스트"
 coverPrompt: "Anime illustration, bright confident daylight: a 13-year-old Korean boy midfielder in a green number 8 kit calmly receiving a ball with a soft first touch during an 11-a-side match, head up scanning the field, older and taller players around him. Calm, confident mood. Not photorealistic, no text."
@@ -49,3 +49,8 @@ mood: "단단"
 | 지금 | 서울의 중학교 팀 |
 
 그런데 이 과정에서 아이만 변한 게 아닙니다. **아빠도 변했습니다.** 다음 글부터는 아빠의 이야기를 하겠습니다. 제가 아들에게 했던 말들, 그리고 그걸 멈추게 한 종이 한 장에 대해서요.
+
+## 함께 읽으면 좋은 글
+
+- [초등 5학년, 매일 새벽 축구 훈련이 시작되다](../2026-11-19-every-dawn/)
+- [미드필더 발밑이 중요한 이유: 고개를 들고 템포까지 이어지는 사슬](../2026-11-22-footwork-to-tempo/)

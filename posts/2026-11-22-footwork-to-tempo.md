@@ -1,10 +1,10 @@
 ---
-title: "발밑이 좋아야 고개를 든다: 발밑에서 템포까지 이어지는 사슬"
+title: "미드필더 발밑이 중요한 이유: 고개를 들고 템포까지 이어지는 사슬"
 date: 2026-11-22T09:00:00+09:00
 category: 전술 노트
 series: 아빠의 육성 철학
-tags: [발밑, 시야체크, 판단력, 템포, 미드필더]
-summary: "왜 그렇게 발밑을 강조했을까. 발밑이 되어야 고개를 들 수 있고, 고개를 들어야 시야가 열리고, 그래야 판단이 빨라집니다."
+tags: [발밑, 미드필더, 시야체크, 판단력, 템포]
+summary: "왜 그렇게 발밑을 강조했을까. 발밑이 되어야 고개를 들 수 있고, 고개를 들어야 시야가 열리고, 그래야 판단이 빨라집니다. 미드필더에게 발밑이 중요한 이유."
 cover: images/2026-11-22-footwork-to-tempo.webp
 coverAlt: "공이 오기 전 주변을 살피는 점선이 그려진 8번 미드필더 일러스트"
 coverPrompt: "Anime illustration in a clean infographic-like composition: a 13-year-old Korean midfielder in a green number 8 kit receiving a ball with a calm first touch while his head is up, glowing dotted lines showing him scanning teammates around the field before the ball arrives. Bright, clear, educational mood. Not photorealistic, no text."
@@ -52,3 +52,8 @@ mood: "진지"
 그래서 저는 아들이 어릴 때 **골보다 발밑**, **결과보다 고개 들기**에 집착했습니다. 특히 미드필더는 공을 가장 많이 만지고 가장 많이 연결하는 자리라서, 이 사슬이 끊기면 팀 전체가 느려집니다.
 
 다음 글에서는 템포를 늦추는 또 하나의 이유, **좌우로만 돌리는 빌드업**에 대해 이야기하겠습니다.
+
+## 함께 읽으면 좋은 글
+
+- [유소년 축구 빌드업: 좌우보다 앞뒤로, 2보 전진을 위한 1보 후퇴](../2026-11-22-back-and-forth/)
+- [축구 학부모 피드백: 골보다 경기 전에 정하는 '목적' 숫자 하나](../2026-11-21-purpose-feedback/)

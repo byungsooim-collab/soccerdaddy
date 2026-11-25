@@ -1,10 +1,10 @@
 ---
-title: "5학년 5월, 매일 새벽 훈련이 시작되다"
+title: "초등 5학년, 매일 새벽 축구 훈련이 시작되다"
 date: 2026-11-19T19:00:00+09:00
 category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
-tags: [새벽훈련, 팀이적, 훈련량, 키]
-summary: "일주일에 한 번이던 새벽 훈련이 매일이 됐습니다. 새벽 2시간, 오후 2시간, 집에서 1시간. 키가 안 클까 걱정하면서도 이 길을 택한 이유."
+tags: [새벽훈련, 초등축구, 훈련량, 팀이적, 성장기]
+summary: "일주일에 한 번이던 새벽 훈련이 매일이 됐습니다. 새벽 2시간, 오후 2시간, 집에서 1시간. 키가 안 클까 걱정하면서도 매일 새벽 축구 훈련을 택한 이유."
 cover: images/2026-11-19-every-dawn.webp
 coverAlt: "분홍빛 새벽 하늘 아래 콘 사이로 드리블하는 소년 일러스트"
 coverPrompt: "Anime illustration, dawn sky in pink and gold: an 11-year-old Korean boy in a green number 8 training kit dribbling through cones on an empty pitch at sunrise, breath visible in the cool air, stadium lights still on. Determined, inspiring mood. Not photorealistic, no text."
@@ -46,3 +46,8 @@ stats:
 이 생활은 **6학년 8월**까지 이어졌습니다. 1년 넘게, 매일 새벽에 일어나 공을 찬 셈입니다. 아이도 대단했지만, 매일 아침 그 길을 함께한 시간도 저에게는 큰 의미로 남았습니다.
 
 그럼 그 새벽들이 아이를 어떻게 바꿔 놓았을까요? 다음 글에서 **지금의 아들**을 소개하겠습니다.
+
+## 함께 읽으면 좋은 글
+
+- [유소년 축구 정체기: 4학년, 아무리 해도 늘지 않던 1년](../2026-11-19-the-year-nothing-changed/)
+- [축구 멘탈: 늘 앞에 더 잘하는 아이가 있었기에 주눅 들지 않는다](../2026-11-20-always-someone-better/)
