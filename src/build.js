@@ -93,13 +93,13 @@ ${fontLinks}
 ${type === 'article' ? '<div class="progress" aria-hidden="true"><i></i></div>' : ''}
 <header class="site-header"><div class="wrap">
   <a class="brand" href="${base}"><span class="brand-badge" aria-hidden="true">⚽</span><span class="brand-text"><b>${esc(config.title)}</b><small>${esc(config.titleEn)}</small></span></a>
-  <nav class="nav">${[['home', base, '홈'], ...(journey ? [['journey', `${base}journey/`, '성장 연대기']] : []), ['about', `${base}about/`, '주니어 소개']].map(([k, href, label]) => `<a href="${href}"${nav === k ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+  <nav class="nav">${[['home', base, '홈'], ['contents', `${base}contents/`, '목차'], ...(journey ? [['journey', `${base}journey/`, '성장 연대기']] : []), ['about', `${base}about/`, '주니어 소개']].map(([k, href, label]) => `<a href="${href}"${nav === k ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
 </div></header>
 ${body}
 <footer class="site-footer"><div class="wrap footer-grid">
   <div><p class="footer-brand">⚽ ${esc(config.title)} <small>${esc(config.titleEn)}</small></p><p>${esc(config.tagline)}</p><p class="footer-note">${esc(player.note)}</p></div>
   <nav class="footer-links" aria-label="바로가기"><b>둘러보기</b><a href="${base}">홈</a>${journey ? `<a href="${base}journey/">성장 연대기</a>` : ''}<a href="${base}about/">주니어 소개</a><a href="${base}feed.xml">RSS 구독</a></nav>
-  <nav class="footer-links" aria-label="카테고리"><b>주제</b>${categories.filter((c) => c !== '공지').map((c) => `<a href="${base}category/${encodeURIComponent(c)}/">${esc(c)}</a>`).join('')}</nav>
+  <nav class="footer-links" aria-label="목차"><b>목차</b>${liveParts().map((b) => `<a href="${base}contents/#${b.id}">${esc(b.label)} · ${esc(b.title)}</a>`).join('')}</nav>
 </div><div class="wrap footer-copy">© ${new Date().getFullYear()} ${esc(config.title)}. 아빠의 관찰 기록이며 의학·전문 코칭 조언이 아닙니다.</div></footer>
 ${type === 'article' ? `<script>(()=>{const b=document.querySelector('.progress i');const f=()=>{const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;b.style.width=(m>0?h.scrollTop/m*100:0)+'%'};addEventListener('scroll',f,{passive:true});f()})();</script>` : ''}
 </body>
@@ -141,19 +141,14 @@ function statusCard(base) {
 </aside>`;
 }
 
-const widgetRecent = (base, except) => {
-  const list = newest.filter((p) => p !== except).slice(0, 4);
-  return list.length ? `<section class="widget"><h3 class="widget-title">최근 글</h3><ul class="mini-list">${list.map((p) => `<li><a href="${base}posts/${p.slug}/"><img src="${esc(coverOf(p, base))}" alt="" loading="lazy" width="96" height="54"><span><b>${esc(p.title)}</b><small>${esc(p.category)} · ${shortDate(p.date)}</small></span></a></li>`).join('')}</ul></section>` : '';
-};
-const widgetCats = (base) => `<nav class="widget" aria-label="카테고리"><h3 class="widget-title">주제별로 보기</h3><div class="cat-list">${categories.map((c) => `<a href="${base}category/${encodeURIComponent(c)}/"><span aria-hidden="true">${esc(pillarOf(c)?.emoji || '⚽')}</span>${esc(c)}<small>${newest.filter((p) => p.category === c).length}</small></a>`).join('')}</div></nav>`;
 const widgetJourney = (base) => journey ? `<a class="widget widget-journey" href="${base}journey/"><small>한눈에 보는</small><b>${esc(journey.title)}</b><span>지나온 길 ${journey.past.length}걸음 · 지금 · 앞으로의 길</span><em>연대기 보기 →</em></a>` : '';
 const widgetSubscribe = (base) => `<section class="widget widget-sub"><h3 class="widget-title">새 글 받아보기</h3><p>매일 아침 9시, 저녁 7시에 새 글이 올라옵니다.</p><a class="btn small" href="${base}feed.xml">RSS 구독하기</a></section>`;
 
 const postCard = (p, base, feature = false) => `<article class="card${feature ? ' feature' : ''}">
   <a href="${base}posts/${p.slug}/" class="card-link">
-    <div class="card-cover">${coverTag(p, base)}${p.series ? `<span class="card-series">${esc(p.series)}</span>` : ''}</div>
+    <div class="card-cover">${coverTag(p, base)}<span class="card-series">${esc(p.part.label)} · ${esc(p.part.title)}</span></div>
     <div class="card-body">
-      <div class="meta"><span class="cat">${esc(pillarOf(p.category)?.emoji || '')} ${esc(p.category)}</span><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time></div>
+      <div class="meta"><span class="cat">📖 ${esc(partTag(p))}</span><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time></div>
       <h2>${esc(p.title)}</h2>
       <p>${esc(p.summary)}</p>
       <span class="card-foot">${p.readMin}분 읽기${p.mood ? ` · 오늘의 기분 ${esc(p.mood)}` : ''}<em>읽기 →</em></span>
@@ -173,31 +168,41 @@ const newest = [...posts].reverse();
 const pillars = config.pillars || [];
 const pillarOf = (c) => pillars.find((x) => x.category === c);
 const categories = [...new Set([...pillars.map((x) => x.category).filter((c) => newest.some((p) => p.category === c)), ...newest.map((p) => p.category)])];
-const pillarSection = (base) => pillars.length ? `<section class="pillars-wrap wrap" aria-label="블로그 주제"><div class="section-head"><h2>이 블로그에서 다루는 이야기</h2><p>일곱 개의 기둥으로 기록합니다</p></div><div class="pillars">${pillars.map((x) => {
-  const n = newest.filter((p) => p.category === x.category).length;
-  const inner = `<span class="pillar-emoji" aria-hidden="true">${x.emoji || '⚽'}</span><b>${esc(x.category)}</b><span class="pillar-desc">${esc(x.desc)}</span><small>${n ? `글 ${n}편` : '곧 연재'}</small>`;
-  return n ? `<a class="pillar" href="${base}category/${encodeURIComponent(x.category)}/">${inner}</a>` : `<div class="pillar soon">${inner}</div>`;
-}).join('')}</div></section>` : '';
+// ---------- 책처럼 읽기: 프롤로그 → 1부 → 2부 → 3부 → 번외 ----------
+// 부(part)는 blog.config.json 의 book 에서 series/category 로 정한다. 부 안에서는 날짜순.
+const bookDef = config.book || [];
+const partOf = (p) => {
+  const i = bookDef.findIndex((b) => b.match && ((b.match.series || []).includes(p.series) || (b.match.category || []).includes(p.category)));
+  return i >= 0 ? i : bookDef.length - 1;
+};
+const book = bookDef.map((b, i) => ({ ...b, id: `part-${i}`, posts: all.filter((p) => partOf(p) === i) }));
+for (const part of book) part.posts.forEach((p, j) => { p.part = part; p.chapter = j + 1; });
+const readable = book.flatMap((b) => b.posts).filter((p) => posts.includes(p)); // 공개된 글만, 책 순서
+const liveParts = () => book.filter((b) => b.posts.some((p) => posts.includes(p)));
+const partTag = (p) => `${p.part.label} · ${p.chapter}화`;
+const chapterList = (part, base, cur = null, showSoon = true) => `<ol class="toc-list">${part.posts.map((x) => {
+  const live = posts.includes(x);
+  if (!live && !showSoon) return '';
+  return live
+    ? `<li${x === cur ? ' aria-current="page"' : ''}><a href="${base}posts/${x.slug}/"><span class="toc-no">${x.chapter}</span><span class="toc-t">${esc(x.title)}</span><small>${x.readMin}분</small></a></li>`
+    : `<li class="soon"><span class="toc-no">${x.chapter}</span><span class="toc-t">${esc(x.title)}</span><small>${shortDate(x.date)} 공개</small></li>`;
+}).join('')}</ol>`;
+const bookSection = (base, compact = false) => `<section class="book${compact ? ' compact' : ''}" aria-label="목차">${liveParts().map((b) => `<div class="book-part" id="${b.id}"><div class="book-part-head"><span class="part-label">${esc(b.label)}</span><h3>${esc(b.title)}</h3><p>${esc(b.desc)}</p></div>${chapterList(b, base)}</div>`).join('')}</section>`;
+const widgetToc = (base, cur) => `<nav class="widget widget-toc" aria-label="전체 목차"><h3 class="widget-title">전체 목차</h3>${liveParts().map((b) => `<div class="wt-part${b === cur.part ? ' open' : ''}"><b><span>${esc(b.label)}</span> ${esc(b.title)}</b>${chapterList(b, base, cur, false)}</div>`).join('')}<a class="status-more" href="${base}contents/">목차 페이지로 <span aria-hidden="true">→</span></a></nav>`;
 const seriesMap = new Map();
 for (const p of posts) if (p.series) { if (!seriesMap.has(p.series)) seriesMap.set(p.series, []); seriesMap.get(p.series).push(p); }
-const seriesBox = (p, base) => {
-  const list = seriesMap.get(p.series);
-  if (!list || list.length < 2) return '';
-  const idx = list.indexOf(p);
-  return `<nav class="series-box" aria-label="연재 목차"><div class="series-head"><span>연재</span><b>${esc(p.series)}</b><small>${idx + 1} / ${list.length}화</small></div><ol>${list.map((x) => `<li${x === p ? ' aria-current="page"' : ''}><a href="${base}posts/${x.slug}/">${esc(x.title)}</a></li>`).join('')}</ol></nav>`;
-};
-const activeSeries = () => [...seriesMap].filter(([, list]) => list.length >= 2);
-const seriesSection = (base) => activeSeries().length ? `<section class="series-strip wrap" aria-label="연재"><div class="section-head"><h2>연재 중</h2><p>처음부터 차례로 읽으면 더 재밌는 이야기</p></div><div class="series-cards">${activeSeries().map(([name, list]) => `<a class="series-card" href="${base}posts/${list[0].slug}/"><img src="${esc(coverOf(list[0], base))}" alt="" loading="lazy" width="1200" height="630"><span class="series-card-in"><small>연재 · ${list.length}편</small><b>${esc(name)}</b><span>최신화: ${esc(list[list.length - 1].title)}</span><em>1화부터 읽기 →</em></span></a>`).join('')}</div></section>` : '';
-const firstChronicle = seriesMap.get(journey?.title)?.[0];
+const activeSeries = () => liveParts().filter((b) => b.posts.filter((p) => posts.includes(p)).length >= 2);
+const firstRead = readable[0];
+const firstChronicle = book[1]?.posts.find((p) => posts.includes(p));
 const heroPost = posts.find((p) => p.category === '공지' && p.cover) || firstChronicle || newest[0];
 
 const listBody = (list, base, heading = '') => `<main class="wrap layout">
 <div class="main-col">
 ${heading}
-${!heading ? '<div class="section-head"><h2>최신 글</h2><p>가장 최근에 올라온 기록부터</p></div>' : ''}
+${!heading ? '<div class="section-head"><h2>최근 올라온 글</h2><a class="head-link" href="contents/">전체 목차 보기 →</a></div>' : ''}
 ${list.length ? `<div class="grid">${list.map((p, i) => postCard(p, base, !heading && i === 0)).join('\n')}</div>` : '<p class="empty">아직 올라온 글이 없습니다.</p>'}
 </div>
-<div class="side-col">${statusCard(base)}${widgetJourney(base)}${widgetCats(base)}${widgetSubscribe(base)}</div>
+<div class="side-col">${statusCard(base)}${widgetJourney(base)}${widgetSubscribe(base)}</div>
 </main>`;
 
 out.set('index.html', page({
@@ -206,7 +211,7 @@ out.set('index.html', page({
     { '@type': 'WebSite', name: config.title, alternateName: config.titleEn, url: abs('/'), inLanguage: 'ko-KR', description: config.description },
     { '@type': 'Blog', name: config.title, url: abs('/'), author: authorLd, blogPost: newest.slice(0, 10).map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: abs(`/posts/${p.slug}/`), datePublished: p.date.toISOString() })) },
   ] },
-  body: `<section class="hero"><div class="wrap hero-grid"><div class="hero-text"><p class="hero-kicker"><span>⚽</span> ${esc(config.titleEn)} · 아빠의 육성 노트</p><h1>${esc(config.tagline)}</h1><p>${esc(config.description)}</p><div class="hero-cta">${firstChronicle ? `<a class="btn primary" href="posts/${firstChronicle.slug}/">처음이라면, 연대기 1화부터 →</a>` : ''}${journey ? '<a class="btn ghost" href="journey/">성장 연대기 보기</a>' : ''}</div><dl class="hero-stats"><div><dt>기록한 글</dt><dd>${posts.length}<small>편</small></dd></div><div><dt>연재</dt><dd>${activeSeries().length}<small>개</small></dd></div><div><dt>주인공</dt><dd>#${player.backNumber}<small>${esc(player.position)}</small></dd></div></dl></div>${heroPost ? `<a class="hero-art" href="posts/${heroPost.slug}/"><img src="${esc(coverOf(heroPost, ''))}" alt="${esc(heroPost.coverAlt)}" width="1200" height="670"><span class="hero-art-tag"><small>첫 이야기</small>${esc(heroPost.title)}</span></a>` : ''}</div></section>\n${seriesSection('')}\n${pillarSection('')}\n${listBody(newest, '')}`,
+  body: `<section class="hero"><div class="wrap hero-grid"><div class="hero-text"><p class="hero-kicker"><span>⚽</span> ${esc(config.titleEn)} · 아빠의 육성 노트</p><h1>${esc(config.tagline)}</h1><p>${esc(config.description)}</p><div class="hero-cta">${firstRead ? `<a class="btn primary" href="posts/${firstRead.slug}/">처음부터 차례로 읽기 →</a>` : ''}<a class="btn ghost" href="contents/">목차 보기</a></div><dl class="hero-stats"><div><dt>기록한 글</dt><dd>${posts.length}<small>편</small></dd></div><div><dt>이야기</dt><dd>${liveParts().length}<small>부</small></dd></div><div><dt>주인공</dt><dd>#${player.backNumber}<small>${esc(player.position)}</small></dd></div></dl></div>${heroPost ? `<a class="hero-art" href="posts/${heroPost.slug}/"><img src="${esc(coverOf(heroPost, ''))}" alt="${esc(heroPost.coverAlt)}" width="1200" height="670"><span class="hero-art-tag"><small>첫 이야기</small>${esc(heroPost.title)}</span></a>` : ''}</div></section>\n<section class="wrap book-wrap"><div class="section-head"><h2>책처럼 읽기</h2><p>프롤로그부터 차례로 읽으면 한 권의 이야기가 됩니다</p></div>${bookSection('')}</section>\n${listBody(newest.slice(0, 6), '')}`,
 }));
 
 for (const c of categories) {
@@ -220,7 +225,8 @@ for (const c of categories) {
 
 posts.forEach((p, i) => {
   const base = '../../';
-  const prev = posts[i - 1], next = posts[i + 1];
+  const k = readable.indexOf(p);
+  const prev = readable[k - 1], next = readable[k + 1];
   const changes = p.changes.length ? `<section class="levelup"><h2>📈 상태창 변화</h2><ul>${p.changes.map((c) => `<li><span>${esc(c.label)}</span><span class="from">${c.before ?? '측정 전'}${c.before != null ? esc(c.unit) : ''}</span><span class="arrow">→</span><b>${esc(c.after)}${esc(c.unit)}</b>${c.diff ? `<em class="${c.diff > 0 ? 'up' : 'down'}">${c.diff > 0 ? '+' : ''}${c.diff}</em>` : ''}</li>`).join('')}</ul></section>` : '';
   out.set(`posts/${p.slug}/index.html`, page({
     title: `${p.title} - ${config.title}`, description: p.summary || config.description, canonical: `/posts/${p.slug}/`, base, type: 'article',
@@ -229,34 +235,39 @@ posts.forEach((p, i) => {
       '@type': 'BlogPosting', headline: p.title, description: p.summary, url: abs(`/posts/${p.slug}/`), mainEntityOfPage: abs(`/posts/${p.slug}/`),
       datePublished: p.date.toISOString(), dateModified: p.date.toISOString(), inLanguage: 'ko-KR', articleSection: p.category, keywords: p.tags.join(', '),
       image: p.cover ? abs('/' + ogImageOf(p)) : undefined, author: authorLd, publisher: { '@type': 'Organization', name: config.title, logo: { '@type': 'ImageObject', url: abs('/favicon.svg') } },
-      ...(p.series ? { isPartOf: { '@type': 'CreativeWorkSeries', name: p.series } } : {}),
-    }, crumbs([[config.title, '/'], [p.category, `/category/${encodeURIComponent(p.category)}/`], [p.title, `/posts/${p.slug}/`]])] },
+      isPartOf: { '@type': 'CreativeWorkSeries', name: p.part.title, url: abs('/contents/') },
+    }, crumbs([[config.title, '/'], [`${p.part.label} ${p.part.title}`, '/contents/'], [p.title, `/posts/${p.slug}/`]])] },
     body: `<main class="wrap post-wrap">
 <article class="post">
   <header class="post-head">
-    <div class="meta"><a class="cat" href="${base}category/${encodeURIComponent(p.category)}/">${esc(pillarOf(p.category)?.emoji || '')} ${esc(p.category)}</a>${p.series ? `<span class="meta-series">${esc(p.series)}</span>` : ''}<time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time><span>${p.readMin}분 읽기</span>${p.mood ? `<span class="mood">오늘의 기분 · ${esc(p.mood)}</span>` : ''}</div>
+    <div class="meta"><a class="cat" href="${base}contents/#${p.part.id}">📖 ${esc(p.part.label)} ${esc(p.part.title)} · ${p.chapter}화</a><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time><span>${p.readMin}분 읽기</span>${p.mood ? `<span class="mood">오늘의 기분 · ${esc(p.mood)}</span>` : ''}</div>
     <h1>${esc(p.title)}</h1>
     ${p.summary ? `<p class="lead">${esc(p.summary)}</p>` : ''}
   </header>
   <figure class="post-cover">${coverTag(p, base)}</figure>
   <div class="prose">${p.html}</div>
-  ${seriesBox(p, base)}
   ${changes}
   ${p.tags.length ? `<p class="tags">${p.tags.map((t) => `<span>#${esc(t)}</span>`).join('')}</p>` : ''}
-  <nav class="pager">${prev ? `<a href="${base}posts/${prev.slug}/"><small>← 이전 글</small>${esc(prev.title)}</a>` : '<span></span>'}${next ? `<a class="next" href="${base}posts/${next.slug}/"><small>다음 글 →</small>${esc(next.title)}</a>` : '<span></span>'}</nav>
+  ${next ? `<a class="next-read" href="${base}posts/${next.slug}/"><img src="${esc(coverOf(next, base))}" alt="" loading="lazy" width="1200" height="630"><span><small>다음 이야기 · ${esc(partTag(next))}${next.part !== p.part ? ` · ${esc(next.part.title)} 시작` : ''}</small><b>${esc(next.title)}</b><em>이어서 읽기 →</em></span></a>` : `<div class="next-read end"><span><small>마지막 이야기까지 읽으셨어요</small><b>다음 글은 매일 아침 9시·저녁 7시에 올라옵니다</b><em><a href="${base}feed.xml">RSS로 새 글 받기 →</a></em></span></div>`}
+  <nav class="pager">${prev ? `<a href="${base}posts/${prev.slug}/"><small>← 이전 이야기 · ${esc(partTag(prev))}</small>${esc(prev.title)}</a>` : '<span></span>'}<a class="next" href="${base}contents/#${p.part.id}"><small>목차</small>${esc(p.part.label)} ${esc(p.part.title)}</a></nav>
 </article>
-<div class="side-col">${statusCard(base)}${widgetRecent(base, p)}${widgetCats(base)}</div>
+<div class="side-col">${widgetToc(base, p)}${statusCard(base)}</div>
 </main>`,
   }));
 });
+
+out.set('contents/index.html', page({
+  title: `목차 - ${config.title}`, description: `${config.title}를 처음부터 차례로 읽는 목차. ${liveParts().map((b) => `${b.label} ${b.title}`).join(', ')}.`, canonical: '/contents/', base: '../', nav: 'contents',
+  ld: { '@context': 'https://schema.org', '@graph': [{ '@type': 'CollectionPage', name: `목차 - ${config.title}`, url: abs('/contents/') }, crumbs([[config.title, '/'], ['목차', '/contents/']])] },
+  body: `<main class="wrap contents"><header class="journey-head"><p class="hero-kicker">${esc(config.titleEn)} · 목차</p><h1>처음부터 차례로 읽기</h1><p>흩어진 글이 아니라 한 권의 이야기로 읽히도록 묶었습니다. 프롤로그에서 시작해 1부부터 순서대로 읽으면 됩니다.</p>${firstRead ? `<div class="hero-cta"><a class="btn primary" href="../posts/${firstRead.slug}/">프롤로그부터 읽기 →</a></div>` : ''}</header>${bookSection('../')}</main>`,
+}));
 
 out.set('about/index.html', page({
   title: `주니어 소개 - ${config.title}`, description: `${config.title}의 주인공, ${player.age}살 ${player.position} 주니어를 소개합니다.`, canonical: '/about/', base: '../', nav: 'about',
   body: `<main class="wrap post-wrap"><article class="post"><header class="post-head"><h1>주니어를 소개합니다</h1><p class="lead">${player.age}살, 등번호 ${player.backNumber}번 ${esc(player.position)}. 이 블로그의 주인공입니다.</p></header>
 <div class="prose"><p>${esc(config.description)}</p>
-<h2>이 블로그에서 다루는 이야기</h2><ul>${pillars.map((x) => `<li><b>${esc(x.category)}</b>: ${esc(x.desc)}</li>`).join('')}</ul>
-<h2>블로그 규칙</h2><ul><li>${esc(player.note)}</li><li>상태창 점수는 프로 선수와 비교한 점수가 아니라, 첫 측정을 기준으로 한 우리 아이만의 성장 지표입니다.</li><li>글은 아빠의 관찰과 기록이며, 의학·전문 코칭 조언이 아닙니다.</li></ul>
-<h2>지금까지의 기록</h2><ul>${newest.map((p) => `<li><a href="../posts/${p.slug}/">${esc(p.title)}</a> <small>${shortDate(p.date)}</small></li>`).join('')}</ul></div></article>
+<h2>이 블로그의 구성</h2><ul>${liveParts().map((b) => `<li><a href="../contents/#${b.id}"><b>${esc(b.label)} ${esc(b.title)}</b></a>: ${esc(b.desc)}</li>`).join('')}</ul>
+<h2>블로그 규칙</h2><ul><li>${esc(player.note)}</li><li>상태창 점수는 프로 선수와 비교한 점수가 아니라, 첫 측정을 기준으로 한 우리 아이만의 성장 지표입니다.</li><li>글은 아빠의 관찰과 기록이며, 의학·전문 코칭 조언이 아닙니다.</li></ul></div></article>
 <div class="side-col">${statusCard('../')}${widgetJourney('../')}</div></main>`,
 }));
 
@@ -287,7 +298,7 @@ const rssItems = newest.slice(0, 30).map((p) => `<item><title>${esc(p.title)}</t
 out.set('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><atom:link href="${esc(siteUrl)}/feed.xml" rel="self" type="application/rss+xml"/><title>${esc(config.title)}</title><link>${esc(siteUrl)}/</link><description>${esc(config.description)}</description><language>ko</language>\n${rssItems}\n</channel></rss>\n`);
 const today = new Date().toISOString().slice(0, 10);
 const lastPost = newest[0]?.date.toISOString().slice(0, 10) || today;
-const smap = [['/', lastPost, '1.0'], ['/about/', lastPost, '0.5'], ...(journey ? [['/journey/', lastPost, '0.7']] : []),
+const smap = [['/', lastPost, '1.0'], ['/contents/', lastPost, '0.9'], ['/about/', lastPost, '0.5'], ...(journey ? [['/journey/', lastPost, '0.7']] : []),
   ...categories.map((c) => [`/category/${encodeURIComponent(c)}/`, newest.find((p) => p.category === c).date.toISOString().slice(0, 10), '0.6']),
   ...newest.map((p) => [`/posts/${p.slug}/`, p.date.toISOString().slice(0, 10), '0.8'])];
 out.set('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${smap.map(([u, d, pr]) => `<url><loc>${esc(siteUrl + u)}</loc><lastmod>${d}</lastmod><priority>${pr}</priority></url>`).join('\n')}\n</urlset>\n`);
