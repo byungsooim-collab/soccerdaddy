@@ -1,6 +1,7 @@
 // posts/*.md + player.json + blog.config.json → dist/ (GitHub Pages 에 올릴 정적 블로그)
 // 날짜가 아직 오지 않은 글은 빼고 만든다. 미리보기: node src/build.js --drafts
 import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
@@ -60,20 +61,28 @@ const fontLinks = `<link rel="preconnect" href="https://fonts.googleapis.com"><l
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">`;
 
-const page = ({ title, description, canonical, body, base, image = '', type = 'website', nav = '' }) => `<!doctype html>
+const page = ({ title, description, canonical, body, base, image = config.ogImage || '', type = 'website', nav = '', ld = null, article = null, noindex = false }) => `<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(siteUrl + canonical)}">
+${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${esc(siteUrl + canonical)}">`}
+${config.keywords?.length ? `<meta name="keywords" content="${esc(config.keywords.join(', '))}">` : ''}
+<meta name="author" content="${esc(config.author)}">
+${config.verification?.google ? `<meta name="google-site-verification" content="${esc(config.verification.google)}">` : ''}
+${config.verification?.naver ? `<meta name="naver-site-verification" content="${esc(config.verification.naver)}">` : ''}
+<meta property="og:locale" content="ko_KR">
 <meta property="og:type" content="${type}">
 <meta property="og:site_name" content="${esc(config.title)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(siteUrl + canonical)}">
-${image ? `<meta property="og:image" content="${esc(siteUrl + '/' + image)}"><meta name="twitter:card" content="summary_large_image">` : ''}
+${image ? `<meta property="og:image" content="${esc(siteUrl + '/' + image)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="670"><meta property="og:image:alt" content="${esc(title)}">` : ''}
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}">${image ? `<meta name="twitter:image" content="${esc(siteUrl + '/' + image)}">` : ''}
+${article ? `<meta property="article:published_time" content="${article.date.toISOString()}"><meta property="article:section" content="${esc(article.category)}">${article.tags.map((t) => `<meta property="article:tag" content="${esc(t)}">`).join('')}` : ''}
+${ld ? `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>` : ''}
 <meta name="theme-color" content="#2f9e5b">
 <link rel="icon" href="${base}favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="${esc(config.title)}" href="${base}feed.xml">
@@ -97,6 +106,11 @@ ${type === 'article' ? `<script>(()=>{const b=document.querySelector('.progress 
 </html>
 `;
 
+const ogImageOf = (p) => {
+  if (!p.cover) return config.ogImage || '';
+  const jpg = `images/og/${path.basename(p.cover).replace(/\.\w+$/, '.jpg')}`;
+  return existsSync(path.join(root, jpg)) ? jpg : p.cover;
+};
 const coverOf = (p, base) => (p.cover ? `${base}${p.cover}` : `${base}covers/${p.slug}.svg`);
 const coverTag = (p, base, cls = '') => `<img class="${cls}" src="${esc(coverOf(p, base))}" alt="${esc(p.cover ? p.coverAlt : '')}" loading="lazy" width="1200" height="630">`;
 
@@ -147,6 +161,11 @@ const postCard = (p, base, feature = false) => `<article class="card${feature ? 
   </a>
 </article>`;
 
+// ---------- 구조화 데이터 (JSON-LD) ----------
+const abs = (u) => siteUrl + u;
+const authorLd = { '@type': 'Person', name: config.author, url: abs('/about/') };
+const crumbs = (items) => ({ '@type': 'BreadcrumbList', itemListElement: items.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: abs(u) })) });
+
 // ---------- 페이지 생성 ----------
 const out = new Map(); // 경로 → 내용
 const newest = [...posts].reverse();
@@ -183,13 +202,18 @@ ${list.length ? `<div class="grid">${list.map((p, i) => postCard(p, base, !headi
 
 out.set('index.html', page({
   title: `${config.title} - ${config.tagline}`, description: config.description, canonical: '/', base: '', nav: 'home',
+  ld: { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebSite', name: config.title, alternateName: config.titleEn, url: abs('/'), inLanguage: 'ko-KR', description: config.description },
+    { '@type': 'Blog', name: config.title, url: abs('/'), author: authorLd, blogPost: newest.slice(0, 10).map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: abs(`/posts/${p.slug}/`), datePublished: p.date.toISOString() })) },
+  ] },
   body: `<section class="hero"><div class="wrap hero-grid"><div class="hero-text"><p class="hero-kicker"><span>⚽</span> ${esc(config.titleEn)} · 아빠의 육성 노트</p><h1>${esc(config.tagline)}</h1><p>${esc(config.description)}</p><div class="hero-cta">${firstChronicle ? `<a class="btn primary" href="posts/${firstChronicle.slug}/">처음이라면, 연대기 1화부터 →</a>` : ''}${journey ? '<a class="btn ghost" href="journey/">성장 연대기 보기</a>' : ''}</div><dl class="hero-stats"><div><dt>기록한 글</dt><dd>${posts.length}<small>편</small></dd></div><div><dt>연재</dt><dd>${activeSeries().length}<small>개</small></dd></div><div><dt>주인공</dt><dd>#${player.backNumber}<small>${esc(player.position)}</small></dd></div></dl></div>${heroPost ? `<a class="hero-art" href="posts/${heroPost.slug}/"><img src="${esc(coverOf(heroPost, ''))}" alt="${esc(heroPost.coverAlt)}" width="1200" height="670"><span class="hero-art-tag"><small>첫 이야기</small>${esc(heroPost.title)}</span></a>` : ''}</div></section>\n${seriesSection('')}\n${pillarSection('')}\n${listBody(newest, '')}`,
 }));
 
 for (const c of categories) {
   const base = '../../';
   out.set(`category/${c}/index.html`, page({
-    title: `${c} - ${config.title}`, description: `${config.title}의 ${c} 글 모음`, canonical: `/category/${encodeURIComponent(c)}/`, base,
+    title: `${c} - ${config.title}`, description: pillarOf(c)?.desc || `${config.title}의 ${c} 글 모음`, canonical: `/category/${encodeURIComponent(c)}/`, base,
+    ld: { '@context': 'https://schema.org', '@graph': [{ '@type': 'CollectionPage', name: `${c} - ${config.title}`, url: abs(`/category/${encodeURIComponent(c)}/`) }, crumbs([[config.title, '/'], [c, `/category/${encodeURIComponent(c)}/`]])] },
     body: listBody(newest.filter((p) => p.category === c), base, `<h1 class="list-title">${esc(pillarOf(c)?.emoji ? pillarOf(c).emoji + ' ' : '')}${esc(c)}</h1>${pillarOf(c) ? `<p class="list-desc">${esc(pillarOf(c).desc)}</p>` : ''}`),
   }));
 }
@@ -200,7 +224,13 @@ posts.forEach((p, i) => {
   const changes = p.changes.length ? `<section class="levelup"><h2>📈 상태창 변화</h2><ul>${p.changes.map((c) => `<li><span>${esc(c.label)}</span><span class="from">${c.before ?? '측정 전'}${c.before != null ? esc(c.unit) : ''}</span><span class="arrow">→</span><b>${esc(c.after)}${esc(c.unit)}</b>${c.diff ? `<em class="${c.diff > 0 ? 'up' : 'down'}">${c.diff > 0 ? '+' : ''}${c.diff}</em>` : ''}</li>`).join('')}</ul></section>` : '';
   out.set(`posts/${p.slug}/index.html`, page({
     title: `${p.title} - ${config.title}`, description: p.summary || config.description, canonical: `/posts/${p.slug}/`, base, type: 'article',
-    image: p.cover || '',
+    image: ogImageOf(p), article: p,
+    ld: { '@context': 'https://schema.org', '@graph': [{
+      '@type': 'BlogPosting', headline: p.title, description: p.summary, url: abs(`/posts/${p.slug}/`), mainEntityOfPage: abs(`/posts/${p.slug}/`),
+      datePublished: p.date.toISOString(), dateModified: p.date.toISOString(), inLanguage: 'ko-KR', articleSection: p.category, keywords: p.tags.join(', '),
+      image: p.cover ? abs('/' + ogImageOf(p)) : undefined, author: authorLd, publisher: { '@type': 'Organization', name: config.title, logo: { '@type': 'ImageObject', url: abs('/favicon.svg') } },
+      ...(p.series ? { isPartOf: { '@type': 'CreativeWorkSeries', name: p.series } } : {}),
+    }, crumbs([[config.title, '/'], [p.category, `/category/${encodeURIComponent(p.category)}/`], [p.title, `/posts/${p.slug}/`]])] },
     body: `<main class="wrap post-wrap">
 <article class="post">
   <header class="post-head">
@@ -251,11 +281,16 @@ ${journey.future.map((e) => item(e, 'future')).join('\n')}
   }));
 }
 
-out.set('404.html', page({ title: `페이지를 찾을 수 없어요 - ${config.title}`, description: '', canonical: '/404.html', base: '/', body: '<main class="wrap"><p class="empty">공이 골대를 벗어났어요. 없는 페이지입니다.<br><a href="./">처음으로</a></p></main>' }));
+out.set('404.html', page({ title: `페이지를 찾을 수 없어요 - ${config.title}`, description: '', canonical: '/404.html', base: '/', noindex: true, body: '<main class="wrap"><p class="empty">공이 골대를 벗어났어요. 없는 페이지입니다.<br><a href="./">처음으로</a></p></main>' }));
 
-const rssItems = newest.slice(0, 30).map((p) => `<item><title>${esc(p.title)}</title><link>${esc(`${siteUrl}/posts/${p.slug}/`)}</link><guid>${esc(`${siteUrl}/posts/${p.slug}/`)}</guid><pubDate>${p.date.toUTCString()}</pubDate><category>${esc(p.category)}</category><description>${esc(p.summary)}</description></item>`).join('\n');
-out.set('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${esc(config.title)}</title><link>${esc(siteUrl)}/</link><description>${esc(config.description)}</description><language>ko</language>\n${rssItems}\n</channel></rss>\n`);
-out.set('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['/', '/about/', ...(journey ? ['/journey/'] : []), ...newest.map((p) => `/posts/${p.slug}/`)].map((u) => `<url><loc>${esc(siteUrl + u)}</loc></url>`).join('\n')}\n</urlset>\n`);
+const rssItems = newest.slice(0, 30).map((p) => `<item><title>${esc(p.title)}</title><link>${esc(`${siteUrl}/posts/${p.slug}/`)}</link><guid>${esc(`${siteUrl}/posts/${p.slug}/`)}</guid><pubDate>${p.date.toUTCString()}</pubDate><category>${esc(p.category)}</category><description>${esc(p.summary)}</description><content:encoded><![CDATA[${p.html.replace(/]]>/g, ']]&gt;')}]]></content:encoded></item>`).join('\n');
+out.set('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><atom:link href="${esc(siteUrl)}/feed.xml" rel="self" type="application/rss+xml"/><title>${esc(config.title)}</title><link>${esc(siteUrl)}/</link><description>${esc(config.description)}</description><language>ko</language>\n${rssItems}\n</channel></rss>\n`);
+const today = new Date().toISOString().slice(0, 10);
+const lastPost = newest[0]?.date.toISOString().slice(0, 10) || today;
+const smap = [['/', lastPost, '1.0'], ['/about/', lastPost, '0.5'], ...(journey ? [['/journey/', lastPost, '0.7']] : []),
+  ...categories.map((c) => [`/category/${encodeURIComponent(c)}/`, newest.find((p) => p.category === c).date.toISOString().slice(0, 10), '0.6']),
+  ...newest.map((p) => [`/posts/${p.slug}/`, p.date.toISOString().slice(0, 10), '0.8'])];
+out.set('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${smap.map(([u, d, pr]) => `<url><loc>${esc(siteUrl + u)}</loc><lastmod>${d}</lastmod><priority>${pr}</priority></url>`).join('\n')}\n</urlset>\n`);
 out.set('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
 out.set('favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#2f9e5b"/><text x="32" y="44" font-size="34" text-anchor="middle">⚽</text></svg>`);
 out.set('.nojekyll', '');
