@@ -30,7 +30,7 @@ npx firebase-tools projects:list           # 표에서 사커대디의 Project I
 npx firebase-tools use --add               # 방금 만든 프로젝트 선택 → 별칭은 default 입력
 ```
 
-`npx firebase-tools use --add` 를 하면 `.firebaserc` 의 `YOUR_FIREBASE_PROJECT_ID` 가 실제 ID 로 바뀝니다.
+`npx firebase-tools use --add` 를 하면 `.firebaserc` 에 실제 프로젝트 ID 가 default 로 기록됩니다.
 Firebase 콘솔(https://console.firebase.google.com) → 사커대디 → Hosting → **시작하기**를 한 번 눌러 Hosting 을 켜 주세요.
 (정적 블로그는 무료 Spark 요금제로 충분합니다. 결제 카드 등록은 필요 없습니다.)
 
