@@ -10,16 +10,16 @@ cd ~/Desktop/soccerdaddy
 npm install                      # firebase 는 설치 없이 npx 로 실행합니다
 ```
 
-## 1. 로그인 (대표가 직접)
+## 1. 로그인 (대표가 직접) — ✅ 완료 (11/25)
 
 ```bash
 npx firebase-tools login                   # 브라우저가 열리면 구글 계정으로 로그인 → 허용
 ```
 
-## 2. 프로젝트 만들기
+## 2. 프로젝트 만들기 — ✅ 완료: ID `soccerdaddy-blog`, 기본 주소 https://soccerdaddy-blog.web.app
 
 ```bash
-npx firebase-tools projects:create soccerdaddy-blog --display-name "사커대디"
+npx firebase-tools projects:create soccerdaddy-blog --display-name "Soccer Daddy"   # 표시 이름은 영문만 가능
 ```
 
 - **"already exists" 오류**가 나면 이름이 이미 쓰이는 것입니다. 뒤에 숫자를 붙여 다시 만드세요. 예: `soccerdaddy-blog-2611`
@@ -31,7 +31,7 @@ npx firebase-tools use --add               # 방금 만든 프로젝트 선택 �
 ```
 
 `npx firebase-tools use --add` 를 하면 `.firebaserc` 에 실제 프로젝트 ID 가 default 로 기록됩니다.
-Firebase 콘솔(https://console.firebase.google.com) → 사커대디 → Hosting → **시작하기**를 한 번 눌러 Hosting 을 켜 주세요.
+Firebase 콘솔(https://console.firebase.google.com) → Soccer Daddy → Hosting → **시작하기**를 한 번 눌러 Hosting 을 켜 주세요.
 (정적 블로그는 무료 Spark 요금제로 충분합니다. 결제 카드 등록은 필요 없습니다.)
 
 ## 3. 첫 배포 (실제 공개 — 대표 확인 후)
