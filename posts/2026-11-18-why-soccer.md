@@ -5,7 +5,8 @@ category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
 tags: [축구시작, 취미반, 태권도, 농구]
 summary: "태권도, 농구, 그리고 축구. 스포츠 센터를 전전하던 아이가 '축구가 제일 재밌다'고 말하기까지의 이야기입니다."
-cover: ""
+cover: images/2026-11-18-why-soccer.webp
+coverAlt: "태권도, 농구, 축구를 해 보는 어린 소년, 축구 장면이 가장 환한 일러스트"
 coverPrompt: "Anime illustration, warm nostalgic colors: a small Korean elementary school boy (about 8) in a sports center, trying taekwondo, basketball and soccer in three small vignettes, the soccer vignette glowing brightest with a huge smile. Not photorealistic, no text."
 mood: "두근"
 ---

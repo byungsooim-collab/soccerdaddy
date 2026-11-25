@@ -4,7 +4,8 @@ date: 2026-11-17T09:00:00+09:00
 category: 공지
 tags: [시작, 다마고치, 성장기록]
 summary: "축구하는 13살 아들을 다마고치처럼, 하지만 진심으로 키워 보는 아빠의 기록. 이 블로그에서 무엇을 어떻게 남길지 소개합니다."
-cover: ""
+cover: images/2026-11-17-hello-soccer-daddy.webp
+coverAlt: "해 뜨는 동네 운동장에서 공을 튀기는 아들과 노트를 든 아빠 일러스트"
 coverPrompt: "Anime illustration, warm soft colors: a Korean dad and his 13-year-old son in a green number 8 youth soccer kit standing side by side on a small neighborhood pitch at sunrise, the boy juggling a ball, dad holding a notebook. Cozy, hopeful blog header mood. Not photorealistic, no text."
 mood: "설렘"
 ---

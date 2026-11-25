@@ -5,7 +5,8 @@ category: 육성 철학
 series: 아빠의 육성 철학
 tags: [유소년육성, 8대8, 11대11, 성장기, 부상]
 summary: "중학교나 고등학교 잘 가려고 축구하는 게 아니라, 성인이 되어 프로가 되려고 하는 것. 초등·중등·고등 시기마다 무엇에 집중해야 하는지 아빠의 생각을 정리했습니다."
-cover: ""
+cover: images/2026-11-21-results-dont-matter-yet.webp
+coverAlt: "멀리 경기장을 향해 구불구불한 길을 걸어가는 8번 소년 일러스트"
 coverPrompt: "Anime illustration, a long winding road on a green soccer field drawn like a journey map: small signposts for elementary, middle school and high school, a young Korean boy in a green number 8 kit walking forward toward a distant stadium on the horizon at sunrise. Inspirational, storybook style. Not photorealistic, no readable text."
 mood: "확신"
 ---

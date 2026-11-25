@@ -5,7 +5,8 @@ category: 성장기록
 series: 상태창 프로젝트
 tags: [선수카드, 측정, 미드필더]
 summary: "상태창의 각 능력치를 집에서 어떻게 잴지 정리했습니다. 거창한 장비 없이, 꾸준히 같은 방법으로 재는 것이 핵심입니다."
-cover: ""
+cover: images/2026-11-17-player-card.webp
+coverAlt: "8번 초록 유니폼 소년 옆에 떠 있는 게임 상태창 일러스트"
 coverPrompt: "Anime illustration in a cozy game-UI style: a 13-year-old Korean boy midfielder in a green number 8 kit standing confidently, next to a floating fantasy-RPG style status window with empty stat bars (stamina, speed, dribble, pass, shoot, vision, mental). Soft pastel colors, playful, not photorealistic, no readable text."
 mood: "기대"
 ---

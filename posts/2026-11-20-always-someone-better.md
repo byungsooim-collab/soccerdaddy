@@ -5,7 +5,8 @@ category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
 tags: [멘탈, 비교, 슬럼프, 중학교팀, 발밑]
 summary: "가장 못하는 자리에서 시작해 서서히 잘하게 된 아이. 덕분에 자기보다 잘하는 선수를 만나도 무너지지 않습니다. 그리고 지금, 중학교 팀에서 듣는 '발밑이 좋다'는 말."
-cover: ""
+cover: images/2026-11-20-always-someone-better.webp
+coverAlt: "11대11 경기에서 고개를 들고 공을 부드럽게 받는 8번 미드필더 일러스트"
 coverPrompt: "Anime illustration, bright confident daylight: a 13-year-old Korean boy midfielder in a green number 8 kit calmly receiving a ball with a soft first touch during an 11-a-side match, head up scanning the field, older and taller players around him. Calm, confident mood. Not photorealistic, no text."
 mood: "단단"
 ---

@@ -5,7 +5,8 @@ category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
 tags: [선수반, 새벽훈련, 비교, 포기]
 summary: "먼저 시작한 친구들은 너무 잘했고, 아들은 하기 싫다고 했습니다. 그때 그만두게 하지 않은 이유와 새벽 훈련을 처음 만난 이야기."
-cover: ""
+cover: images/2026-11-18-worst-in-the-team.webp
+coverAlt: "공을 꼭 안고 형들의 훈련을 지켜보는 작은 소년과 어깨에 손을 얹은 아빠 일러스트"
 coverPrompt: "Anime illustration, early morning blue light: a small Korean boy in an oversized green training top standing at the edge of a futsal-sized pitch, watching older skilled kids juggle, holding his ball tightly, his dad's hand on his shoulder. Gentle, slightly melancholic but hopeful. Not photorealistic, no text."
 mood: "속상"
 ---

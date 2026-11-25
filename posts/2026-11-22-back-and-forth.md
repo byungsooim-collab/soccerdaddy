@@ -5,7 +5,8 @@ category: 전술 노트
 series: 아빠의 육성 철학
 tags: [빌드업, 티키타카, 템포, 전술]
 summary: "공간을 만들려고 좌우로 공을 돌리면 템포가 죽습니다. 유럽 축구를 보며 느낀, 앞뒤로 주고받으며 앞으로 찔러 넣는 빌드업 이야기."
-cover: ""
+cover: images/2026-11-22-back-and-forth.webp
+coverAlt: "백패스 뒤 전진 패스를 화살표로 보여 주는 전술판 느낌의 일러스트"
 coverPrompt: "Anime illustration from a high tactical angle: youth players in green kits on a soccer pitch, glowing arrows showing a short back pass followed by a sharp forward through pass, a 13-year-old midfielder number 8 at the center of the pattern. Clean, energetic, storybook tactics board feel. Not photorealistic, no text."
 mood: "진지"
 ---

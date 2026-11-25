@@ -5,7 +5,8 @@ category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
 tags: [4학년, 정체기, 자신감, 벤치]
 summary: "일주일에 한 번 새벽 레슨을 꾸준히 다녔지만 실력은 제자리였습니다. 배운 걸 매번 잊고, 경기는 거의 못 뛰고, 감독님께 혼나던 시간."
-cover: ""
+cover: images/2026-11-19-the-year-nothing-changed.webp
+coverAlt: "흐린 날 벤치에 혼자 앉아 경기를 지켜보는 소년 일러스트"
 coverPrompt: "Anime illustration, overcast muted palette: a 10-year-old Korean boy sitting alone on a team bench in a green bib, chin on his hands, watching teammates play a match, a ball at his feet. Quiet, reflective mood but with a small warm light on him. Not photorealistic, no text."
 mood: "답답"
 ---

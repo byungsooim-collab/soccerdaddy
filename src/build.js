@@ -60,7 +60,7 @@ const fontLinks = `<link rel="preconnect" href="https://fonts.googleapis.com"><l
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">`;
 
-const page = ({ title, description, canonical, body, base, image = '', type = 'website' }) => `<!doctype html>
+const page = ({ title, description, canonical, body, base, image = '', type = 'website', nav = '' }) => `<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
@@ -83,15 +83,15 @@ ${fontLinks}
 <body>
 ${type === 'article' ? '<div class="progress" aria-hidden="true"><i></i></div>' : ''}
 <header class="site-header"><div class="wrap">
-  <a class="brand" href="${base}"><span class="brand-ball" aria-hidden="true">⚽</span><span>${esc(config.title)}</span><small>${esc(config.titleEn)}</small></a>
-  <nav class="nav"><a href="${base}">글 목록</a>${journey ? `<a href="${base}journey/">성장 연대기</a>` : ''}<a href="${base}about/">주니어 소개</a></nav>
+  <a class="brand" href="${base}"><span class="brand-badge" aria-hidden="true">⚽</span><span class="brand-text"><b>${esc(config.title)}</b><small>${esc(config.titleEn)}</small></span></a>
+  <nav class="nav">${[['home', base, '홈'], ...(journey ? [['journey', `${base}journey/`, '성장 연대기']] : []), ['about', `${base}about/`, '주니어 소개']].map(([k, href, label]) => `<a href="${href}"${nav === k ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
 </div></header>
 ${body}
-<footer class="site-footer"><div class="wrap">
-  <p><b>${esc(config.title)}</b> · ${esc(config.tagline)}</p>
-  <p>${esc(player.note)}</p>
-  <p><a href="${base}feed.xml">RSS 구독</a></p>
-</div></footer>
+<footer class="site-footer"><div class="wrap footer-grid">
+  <div><p class="footer-brand">⚽ ${esc(config.title)} <small>${esc(config.titleEn)}</small></p><p>${esc(config.tagline)}</p><p class="footer-note">${esc(player.note)}</p></div>
+  <nav class="footer-links" aria-label="바로가기"><b>둘러보기</b><a href="${base}">홈</a>${journey ? `<a href="${base}journey/">성장 연대기</a>` : ''}<a href="${base}about/">주니어 소개</a><a href="${base}feed.xml">RSS 구독</a></nav>
+  <nav class="footer-links" aria-label="카테고리"><b>주제</b>${(config.pillars || []).slice(0, 7).map((x) => `<a href="${base}category/${encodeURIComponent(x.category)}/">${esc(x.category)}</a>`).join('')}</nav>
+</div><div class="wrap footer-copy">© ${new Date().getFullYear()} ${esc(config.title)}. 아빠의 관찰 기록이며 의학·전문 코칭 조언이 아닙니다.</div></footer>
 ${type === 'article' ? `<script>(()=>{const b=document.querySelector('.progress i');const f=()=>{const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;b.style.width=(m>0?h.scrollTop/m*100:0)+'%'};addEventListener('scroll',f,{passive:true});f()})();</script>` : ''}
 </body>
 </html>
@@ -102,28 +102,47 @@ const coverTag = (p, base, cls = '') => `<img class="${cls}" src="${esc(coverOf(
 
 function statusCard(base) {
   const measured = (v) => v !== null && v !== undefined && v !== '';
-  const profileRows = player.profile.map((f) => `<div class="prof"><span>${esc(f.label)}</span><b>${measured(current[f.key]) ? esc(current[f.key]) + esc(f.unit || '') : '측정 전'}</b></div>`).join('');
+  const vals = player.stats.map((f) => current[f.key]).filter((v) => typeof v === 'number');
+  const ovr = vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null;
+  const profileRows = player.profile.map((f) => `<div class="prof"><span>${esc(f.label)}</span><b>${measured(current[f.key]) ? esc(current[f.key]) + esc(f.unit || '') : '—'}</b></div>`).join('');
   const bars = player.stats.map((f) => {
     const v = current[f.key];
-    return `<li><span class="stat-label">${esc(f.label)}</span><span class="bar"><i style="width:${measured(v) ? Math.max(0, Math.min(100, v)) : 0}%"></i></span><b class="stat-val">${measured(v) ? esc(v) : '?'}</b></li>`;
+    return `<li><span class="stat-label">${esc(f.label)}</span><span class="bar"><i style="width:${measured(v) ? Math.max(0, Math.min(100, v)) : 0}%"></i></span><b class="stat-val">${measured(v) ? esc(v) : '–'}</b></li>`;
   }).join('');
   const cond = current.condition;
-  return `<aside class="status" aria-label="선수 상태창">
-  <div class="status-head"><div class="avatar" aria-hidden="true">${player.backNumber}</div><div><div class="status-name">${esc(player.nickname)} <small>${player.age}살 · ${esc(player.position)}</small></div>${player.team ? `<div class="status-cond">소속: <b>${esc(player.team)}</b></div>` : ''}<div class="status-cond">${esc(player.condition?.label || '컨디션')}: <b>${measured(cond) ? esc(cond) : '측정 전'}</b></div></div></div>
-  <div class="profile">${profileRows}</div>
-  <ul class="stats">${bars}</ul>
-  <p class="status-note">${posts.some((p) => p.changes.length) ? `최근 변화: ${esc(shortDate([...posts].reverse().find((p) => p.changes.length).date))}` : '아직 측정 전입니다. 첫 측정 후 채워집니다.'}</p>
-  <a class="status-more" href="${base}about/">주니어 소개 보기 →</a>
+  const last = [...posts].reverse().find((p) => p.changes.length);
+  return `<aside class="pcard" aria-label="선수 상태창">
+  <div class="pcard-top">
+    <div class="pcard-ovr"><b>${ovr ?? '??'}</b><span>OVR</span><small>${esc(player.position === '미드필더' ? 'MF' : player.position)}</small></div>
+    <div class="pcard-num" aria-hidden="true">${player.backNumber}</div>
+    <div class="pcard-id"><span class="pcard-label">PLAYER STATUS</span><b>${esc(player.nickname)}</b><small>${player.age}살 · ${esc(player.position)}${player.team ? ` · ${esc(player.team)}` : ''}</small></div>
+  </div>
+  <div class="pcard-body">
+    <div class="profile">${profileRows}</div>
+    <div class="pcard-cond"><span>${esc(player.condition?.label || '컨디션')}</span><b>${measured(cond) ? esc(cond) : '측정 전'}</b></div>
+    <ul class="stats">${bars}</ul>
+    <p class="status-note">${last ? `최근 업데이트 · ${esc(shortDate(last.date))}` : '첫 측정 후 능력치가 채워집니다.'}</p>
+    <a class="status-more" href="${base}about/">주니어 프로필 보기 <span aria-hidden="true">→</span></a>
+  </div>
 </aside>`;
 }
 
+const widgetRecent = (base, except) => {
+  const list = newest.filter((p) => p !== except).slice(0, 4);
+  return list.length ? `<section class="widget"><h3 class="widget-title">최근 글</h3><ul class="mini-list">${list.map((p) => `<li><a href="${base}posts/${p.slug}/"><img src="${esc(coverOf(p, base))}" alt="" loading="lazy" width="96" height="54"><span><b>${esc(p.title)}</b><small>${esc(p.category)} · ${shortDate(p.date)}</small></span></a></li>`).join('')}</ul></section>` : '';
+};
+const widgetCats = (base) => `<nav class="widget" aria-label="카테고리"><h3 class="widget-title">주제별로 보기</h3><div class="cat-list">${categories.map((c) => `<a href="${base}category/${encodeURIComponent(c)}/"><span aria-hidden="true">${esc(pillarOf(c)?.emoji || '⚽')}</span>${esc(c)}<small>${newest.filter((p) => p.category === c).length}</small></a>`).join('')}</div></nav>`;
+const widgetJourney = (base) => journey ? `<a class="widget widget-journey" href="${base}journey/"><small>한눈에 보는</small><b>${esc(journey.title)}</b><span>지나온 길 ${journey.past.length}걸음 · 지금 · 앞으로의 길</span><em>연대기 보기 →</em></a>` : '';
+const widgetSubscribe = (base) => `<section class="widget widget-sub"><h3 class="widget-title">새 글 받아보기</h3><p>매일 아침 9시, 저녁 7시에 새 글이 올라옵니다.</p><a class="btn small" href="${base}feed.xml">RSS 구독하기</a></section>`;
+
 const postCard = (p, base, feature = false) => `<article class="card${feature ? ' feature' : ''}">
   <a href="${base}posts/${p.slug}/" class="card-link">
-    <div class="card-cover">${coverTag(p, base)}</div>
+    <div class="card-cover">${coverTag(p, base)}${p.series ? `<span class="card-series">${esc(p.series)}</span>` : ''}</div>
     <div class="card-body">
-      <div class="meta"><span class="cat">${esc(p.category)}</span><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time></div>
+      <div class="meta"><span class="cat">${esc(pillarOf(p.category)?.emoji || '')} ${esc(p.category)}</span><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time></div>
       <h2>${esc(p.title)}</h2>
       <p>${esc(p.summary)}</p>
+      <span class="card-foot">${p.readMin}분 읽기${p.mood ? ` · 오늘의 기분 ${esc(p.mood)}` : ''}<em>읽기 →</em></span>
     </div>
   </a>
 </article>`;
@@ -135,11 +154,11 @@ const newest = [...posts].reverse();
 const pillars = config.pillars || [];
 const pillarOf = (c) => pillars.find((x) => x.category === c);
 const categories = [...new Set([...pillars.map((x) => x.category).filter((c) => newest.some((p) => p.category === c)), ...newest.map((p) => p.category)])];
-const pillarSection = (base) => pillars.length ? `<section class="pillars wrap" aria-label="블로그 주제"><h2 class="sr">이 블로그에서 다루는 이야기</h2>${pillars.map((x) => {
+const pillarSection = (base) => pillars.length ? `<section class="pillars-wrap wrap" aria-label="블로그 주제"><div class="section-head"><h2>이 블로그에서 다루는 이야기</h2><p>일곱 개의 기둥으로 기록합니다</p></div><div class="pillars">${pillars.map((x) => {
   const n = newest.filter((p) => p.category === x.category).length;
   const inner = `<span class="pillar-emoji" aria-hidden="true">${x.emoji || '⚽'}</span><b>${esc(x.category)}</b><span class="pillar-desc">${esc(x.desc)}</span><small>${n ? `글 ${n}편` : '곧 연재'}</small>`;
   return n ? `<a class="pillar" href="${base}category/${encodeURIComponent(x.category)}/">${inner}</a>` : `<div class="pillar soon">${inner}</div>`;
-}).join('')}</section>` : '';
+}).join('')}</div></section>` : '';
 const seriesMap = new Map();
 for (const p of posts) if (p.series) { if (!seriesMap.has(p.series)) seriesMap.set(p.series, []); seriesMap.get(p.series).push(p); }
 const seriesBox = (p, base) => {
@@ -149,22 +168,22 @@ const seriesBox = (p, base) => {
   return `<nav class="series-box" aria-label="연재 목차"><div class="series-head"><span>연재</span><b>${esc(p.series)}</b><small>${idx + 1} / ${list.length}화</small></div><ol>${list.map((x) => `<li${x === p ? ' aria-current="page"' : ''}><a href="${base}posts/${x.slug}/">${esc(x.title)}</a></li>`).join('')}</ol></nav>`;
 };
 const activeSeries = () => [...seriesMap].filter(([, list]) => list.length >= 2);
-const seriesSection = (base) => activeSeries().length ? `<section class="series-strip wrap" aria-label="연재"><h2>연재 중</h2><div class="series-cards">${activeSeries().map(([name, list]) => `<a class="series-card" href="${base}posts/${list[0].slug}/"><small>${list.length}편 · 1화부터 읽기</small><b>${esc(name)}</b><span>${esc(list[list.length - 1].title)}</span></a>`).join('')}</div></section>` : '';
+const seriesSection = (base) => activeSeries().length ? `<section class="series-strip wrap" aria-label="연재"><div class="section-head"><h2>연재 중</h2><p>처음부터 차례로 읽으면 더 재밌는 이야기</p></div><div class="series-cards">${activeSeries().map(([name, list]) => `<a class="series-card" href="${base}posts/${list[0].slug}/"><img src="${esc(coverOf(list[0], base))}" alt="" loading="lazy" width="1200" height="630"><span class="series-card-in"><small>연재 · ${list.length}편</small><b>${esc(name)}</b><span>최신화: ${esc(list[list.length - 1].title)}</span><em>1화부터 읽기 →</em></span></a>`).join('')}</div></section>` : '';
 const firstChronicle = seriesMap.get(journey?.title)?.[0];
+const heroPost = posts.find((p) => p.category === '공지' && p.cover) || firstChronicle || newest[0];
 
 const listBody = (list, base, heading = '') => `<main class="wrap layout">
 <div class="main-col">
 ${heading}
+${!heading ? '<div class="section-head"><h2>최신 글</h2><p>가장 최근에 올라온 기록부터</p></div>' : ''}
 ${list.length ? `<div class="grid">${list.map((p, i) => postCard(p, base, !heading && i === 0)).join('\n')}</div>` : '<p class="empty">아직 올라온 글이 없습니다.</p>'}
 </div>
-<div class="side-col">${statusCard(base)}
-<nav class="cats card-plain" aria-label="카테고리"><h3>카테고리</h3>${categories.map((c) => `<a href="${base}category/${encodeURIComponent(c)}/">${esc(c)} <small>${newest.filter((p) => p.category === c).length}</small></a>`).join('')}</nav>
-</div>
+<div class="side-col">${statusCard(base)}${widgetJourney(base)}${widgetCats(base)}${widgetSubscribe(base)}</div>
 </main>`;
 
 out.set('index.html', page({
-  title: `${config.title} - ${config.tagline}`, description: config.description, canonical: '/', base: '',
-  body: `<section class="hero"><div class="wrap"><p class="hero-kicker">${esc(config.titleEn)}</p><h1>${esc(config.tagline)}</h1><p>${esc(config.description)}</p><div class="hero-cta">${firstChronicle ? `<a class="btn primary" href="posts/${firstChronicle.slug}/">처음이라면, 연대기 1화부터 →</a>` : ''}${journey ? '<a class="btn" href="journey/">성장 연대기 한눈에 보기</a>' : ''}</div></div></section>\n${seriesSection('')}\n${pillarSection('')}\n${listBody(newest, '')}`,
+  title: `${config.title} - ${config.tagline}`, description: config.description, canonical: '/', base: '', nav: 'home',
+  body: `<section class="hero"><div class="wrap hero-grid"><div class="hero-text"><p class="hero-kicker"><span>⚽</span> ${esc(config.titleEn)} · 아빠의 육성 노트</p><h1>${esc(config.tagline)}</h1><p>${esc(config.description)}</p><div class="hero-cta">${firstChronicle ? `<a class="btn primary" href="posts/${firstChronicle.slug}/">처음이라면, 연대기 1화부터 →</a>` : ''}${journey ? '<a class="btn ghost" href="journey/">성장 연대기 보기</a>' : ''}</div><dl class="hero-stats"><div><dt>기록한 글</dt><dd>${posts.length}<small>편</small></dd></div><div><dt>연재</dt><dd>${activeSeries().length}<small>개</small></dd></div><div><dt>주인공</dt><dd>#${player.backNumber}<small>${esc(player.position)}</small></dd></div></dl></div>${heroPost ? `<a class="hero-art" href="posts/${heroPost.slug}/"><img src="${esc(coverOf(heroPost, ''))}" alt="${esc(heroPost.coverAlt)}" width="1200" height="670"><span class="hero-art-tag"><small>첫 이야기</small>${esc(heroPost.title)}</span></a>` : ''}</div></section>\n${seriesSection('')}\n${pillarSection('')}\n${listBody(newest, '')}`,
 }));
 
 for (const c of categories) {
@@ -185,7 +204,7 @@ posts.forEach((p, i) => {
     body: `<main class="wrap post-wrap">
 <article class="post">
   <header class="post-head">
-    <div class="meta"><a class="cat" href="${base}category/${encodeURIComponent(p.category)}/">${esc(p.category)}</a><time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time><span>${p.readMin}분 읽기</span>${p.mood ? `<span class="mood">오늘의 기분 · ${esc(p.mood)}</span>` : ''}</div>
+    <div class="meta"><a class="cat" href="${base}category/${encodeURIComponent(p.category)}/">${esc(pillarOf(p.category)?.emoji || '')} ${esc(p.category)}</a>${p.series ? `<span class="meta-series">${esc(p.series)}</span>` : ''}<time datetime="${p.date.toISOString()}">${fmtDate(p.date)}</time><span>${p.readMin}분 읽기</span>${p.mood ? `<span class="mood">오늘의 기분 · ${esc(p.mood)}</span>` : ''}</div>
     <h1>${esc(p.title)}</h1>
     ${p.summary ? `<p class="lead">${esc(p.summary)}</p>` : ''}
   </header>
@@ -196,19 +215,19 @@ posts.forEach((p, i) => {
   ${p.tags.length ? `<p class="tags">${p.tags.map((t) => `<span>#${esc(t)}</span>`).join('')}</p>` : ''}
   <nav class="pager">${prev ? `<a href="${base}posts/${prev.slug}/"><small>← 이전 글</small>${esc(prev.title)}</a>` : '<span></span>'}${next ? `<a class="next" href="${base}posts/${next.slug}/"><small>다음 글 →</small>${esc(next.title)}</a>` : '<span></span>'}</nav>
 </article>
-<div class="side-col">${statusCard(base)}</div>
+<div class="side-col">${statusCard(base)}${widgetRecent(base, p)}${widgetCats(base)}</div>
 </main>`,
   }));
 });
 
 out.set('about/index.html', page({
-  title: `주니어 소개 - ${config.title}`, description: `${config.title}의 주인공, ${player.age}살 ${player.position} 주니어를 소개합니다.`, canonical: '/about/', base: '../',
+  title: `주니어 소개 - ${config.title}`, description: `${config.title}의 주인공, ${player.age}살 ${player.position} 주니어를 소개합니다.`, canonical: '/about/', base: '../', nav: 'about',
   body: `<main class="wrap post-wrap"><article class="post"><header class="post-head"><h1>주니어를 소개합니다</h1><p class="lead">${player.age}살, 등번호 ${player.backNumber}번 ${esc(player.position)}. 이 블로그의 주인공입니다.</p></header>
 <div class="prose"><p>${esc(config.description)}</p>
 <h2>이 블로그에서 다루는 이야기</h2><ul>${pillars.map((x) => `<li><b>${esc(x.category)}</b>: ${esc(x.desc)}</li>`).join('')}</ul>
 <h2>블로그 규칙</h2><ul><li>${esc(player.note)}</li><li>상태창 점수는 프로 선수와 비교한 점수가 아니라, 첫 측정을 기준으로 한 우리 아이만의 성장 지표입니다.</li><li>글은 아빠의 관찰과 기록이며, 의학·전문 코칭 조언이 아닙니다.</li></ul>
 <h2>지금까지의 기록</h2><ul>${newest.map((p) => `<li><a href="../posts/${p.slug}/">${esc(p.title)}</a> <small>${shortDate(p.date)}</small></li>`).join('')}</ul></div></article>
-<div class="side-col">${statusCard('../')}</div></main>`,
+<div class="side-col">${statusCard('../')}${widgetJourney('../')}</div></main>`,
 }));
 
 if (journey) {
@@ -219,7 +238,7 @@ if (journey) {
     return `<li class="tl-item ${kind}"><span class="tl-dot" aria-hidden="true"></span><div class="tl-card"><small>${esc(e.when)}</small><b>${esc(e.title)}</b><p>${esc(e.text)}</p>${post ? `<a href="${base}posts/${post.slug}/">이야기 읽기 →</a>` : e.post ? '<span class="tl-soon">글 공개 예정</span>' : ''}</div></li>`;
   };
   out.set('journey/index.html', page({
-    title: `성장 연대기 - ${config.title}`, description: journey.intro, canonical: '/journey/', base,
+    title: `성장 연대기 - ${config.title}`, description: journey.intro, canonical: '/journey/', base, nav: 'journey',
     body: `<main class="wrap journey"><header class="journey-head"><p class="hero-kicker">${esc(config.titleEn)}</p><h1>${esc(journey.title)}</h1><p>${esc(journey.intro)}</p></header>
 <ol class="timeline">
 <li class="tl-label">지나온 길</li>

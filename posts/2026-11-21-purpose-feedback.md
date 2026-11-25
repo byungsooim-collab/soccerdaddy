@@ -5,7 +5,8 @@ category: 아빠의 역할
 series: 아빠가 바뀐 이야기
 tags: [피드백, 목표설정, 시야체크, 패스]
 summary: "골을 넣었는지, 이겼는지가 아니라 '오늘의 목적'을 지켰는지. 패스 몇 번, 고개 들기 몇 번처럼 아이 스스로 확인할 수 있는 목표를 주는 방법."
-cover: ""
+cover: images/2026-11-21-purpose-feedback.webp
+coverAlt: "경기 전 아들 눈높이로 앉아 손가락 두 개를 들어 보이는 아빠 일러스트"
 coverPrompt: "Anime illustration, sunny sideline: a Korean dad crouching to eye level with his 12-year-old son in a green number 8 kit before a practice match, holding up two fingers with a gentle smile, the boy nodding with focused eyes. Warm encouraging mood. Not photorealistic, no text."
 mood: "집중"
 ---

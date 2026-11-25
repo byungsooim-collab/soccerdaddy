@@ -5,7 +5,8 @@ category: 전술 노트
 series: 아빠의 육성 철학
 tags: [발밑, 시야체크, 판단력, 템포, 미드필더]
 summary: "왜 그렇게 발밑을 강조했을까. 발밑이 되어야 고개를 들 수 있고, 고개를 들어야 시야가 열리고, 그래야 판단이 빨라집니다."
-cover: ""
+cover: images/2026-11-22-footwork-to-tempo.webp
+coverAlt: "공이 오기 전 주변을 살피는 점선이 그려진 8번 미드필더 일러스트"
 coverPrompt: "Anime illustration in a clean infographic-like composition: a 13-year-old Korean midfielder in a green number 8 kit receiving a ball with a calm first touch while his head is up, glowing dotted lines showing him scanning teammates around the field before the ball arrives. Bright, clear, educational mood. Not photorealistic, no text."
 mood: "진지"
 ---

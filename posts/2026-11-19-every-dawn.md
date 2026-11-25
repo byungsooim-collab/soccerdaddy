@@ -5,7 +5,8 @@ category: 우리가 해 온 것
 series: 우리 아들 축구 연대기
 tags: [새벽훈련, 팀이적, 훈련량, 키]
 summary: "일주일에 한 번이던 새벽 훈련이 매일이 됐습니다. 새벽 2시간, 오후 2시간, 집에서 1시간. 키가 안 클까 걱정하면서도 이 길을 택한 이유."
-cover: ""
+cover: images/2026-11-19-every-dawn.webp
+coverAlt: "분홍빛 새벽 하늘 아래 콘 사이로 드리블하는 소년 일러스트"
 coverPrompt: "Anime illustration, dawn sky in pink and gold: an 11-year-old Korean boy in a green number 8 training kit dribbling through cones on an empty pitch at sunrise, breath visible in the cool air, stadium lights still on. Determined, inspiring mood. Not photorealistic, no text."
 mood: "각오"
 stats:
