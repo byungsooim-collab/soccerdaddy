@@ -99,7 +99,7 @@ ${body}
 <footer class="site-footer"><div class="wrap footer-grid">
   <div><p class="footer-brand">⚽ ${esc(config.title)} <small>${esc(config.titleEn)}</small></p><p>${esc(config.tagline)}</p><p class="footer-note">${esc(player.note)}</p></div>
   <nav class="footer-links" aria-label="바로가기"><b>둘러보기</b><a href="${base}">홈</a>${journey ? `<a href="${base}journey/">성장 연대기</a>` : ''}<a href="${base}about/">주니어 소개</a><a href="${base}feed.xml">RSS 구독</a></nav>
-  <nav class="footer-links" aria-label="카테고리"><b>주제</b>${(config.pillars || []).slice(0, 7).map((x) => `<a href="${base}category/${encodeURIComponent(x.category)}/">${esc(x.category)}</a>`).join('')}</nav>
+  <nav class="footer-links" aria-label="카테고리"><b>주제</b>${categories.filter((c) => c !== '공지').map((c) => `<a href="${base}category/${encodeURIComponent(c)}/">${esc(c)}</a>`).join('')}</nav>
 </div><div class="wrap footer-copy">© ${new Date().getFullYear()} ${esc(config.title)}. 아빠의 관찰 기록이며 의학·전문 코칭 조언이 아닙니다.</div></footer>
 ${type === 'article' ? `<script>(()=>{const b=document.querySelector('.progress i');const f=()=>{const h=document.documentElement;const m=h.scrollHeight-h.clientHeight;b.style.width=(m>0?h.scrollTop/m*100:0)+'%'};addEventListener('scroll',f,{passive:true});f()})();</script>` : ''}
 </body>
