@@ -34,7 +34,7 @@ npx firebase-tools use --add               # 방금 만든 프로젝트 선택 �
 Firebase 콘솔(https://console.firebase.google.com) → Soccer Daddy → Hosting → **시작하기**를 한 번 눌러 Hosting 을 켜 주세요.
 (정적 블로그는 무료 Spark 요금제로 충분합니다. 결제 카드 등록은 필요 없습니다.)
 
-## 3. 첫 배포 (실제 공개 — 대표 확인 후)
+## 3. 첫 배포 — ✅ 완료 (11/25): https://soccerdaddy-blog.web.app
 
 ```bash
 npm run deploy
